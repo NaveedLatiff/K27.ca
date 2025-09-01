@@ -44,51 +44,64 @@ const page = () => {
         })
     })
 
-    useGSAP(() => {
-        let tween1 = gsap.to(".text1", {
-            x: "-120%",
-            duration: 15,
-            repeat: -1,
-            ease: "none",
-            paused: true, 
-        });
+    useGSAP(()=>{
+        gsap.from(".section-3",{
+            opacity:0,
+            y:60,
+            scrollTrigger:{
+                trigger:".section-3",
+                start:"top 50%",
+                markers:true,
 
-        let tween2 = gsap.to(".text2", {
-            x: "126%",
-            duration: 15,
-            repeat: -1,
-            ease: "none",
-            paused: true, 
-        });
-
-        gsap.to("body", {
-            backgroundColor: "black",
-            color:"white",
-            duration: 0.5,
-            scrollTrigger: {
-                trigger: section4Ref.current,
-                start: "top 80%",
-                end: "top -100%",
-                toggleActions: "play reverse play reverse",
-                onEnter: () => {
-                    tween1.play();
-                    tween2.play();
-                },
-                onLeave: () => {
-                    tween1.pause();
-                    tween2.pause();
-                },
-                onEnterBack: () => {
-                    tween1.play();
-                    tween2.play();
-                },
-                onLeaveBack: () => {
-                    tween1.pause();
-                    tween2.pause();
-                }
-            },
+            }
         })
     })
+
+    useGSAP(() => {
+    let tween1 = gsap.to(".text1", {
+        x: "-120%",
+        duration: 15,
+        repeat: -1,
+        ease: "none",
+        paused: true, 
+    });
+
+    let tween2 = gsap.to(".text2", {
+        x: "196%",
+        duration: 15, 
+        repeat: -1,
+        ease: "none",
+        paused: true, 
+    });
+
+    gsap.to("body", {
+        backgroundColor: "black",
+        color:"white",
+        duration: 0.5,
+        scrollTrigger: {
+            trigger: section4Ref.current,
+            start: "top 80%",
+            end: "top -100%",
+            toggleActions: "play reverse play reverse",
+            onEnter: () => {
+                tween1.play();
+                  tween2.play()
+            },
+            onLeave: () => {
+                tween1.pause()
+                tween2.pause()
+            },
+            onEnterBack: () => {
+                tween1.play()
+                    tween2.play()
+            },
+            onLeaveBack: () => {
+                tween1.pause()
+                tween2.pause()
+            }
+        },
+    })
+})
     return (
         <div>
             <div className='section-1 h-[100vh] w-full  '>
@@ -149,7 +162,10 @@ const page = () => {
                     />
                 </div>
                 <p className='w-full absolute z-0 text1 left-[100%] top-[20%] '>CARL</p>
-                <p className='w-full text2 absolute z-39 left-[-20%] top-[50%] f'>GODBOUT </p>
+                <p className='w-full text2 absolute z-39 left-[-75%] top-[50%] flex gap-[30px]  items-center'> 
+                    <p className=''>GODBOUT</p>
+                    <p className='text-white uppercase text-[3vw]'>Directrice de création</p>
+                </p>
             </div>
         </div>
     )
