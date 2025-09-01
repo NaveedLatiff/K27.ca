@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from 'next/image'
+import Footer from '../Components/Project/Footer'
 gsap.registerPlugin(ScrollTrigger)
 gsap.registerPlugin(useGSAP)
 
@@ -106,7 +107,7 @@ const page = () => {
         <div>
             <div className='section-1 h-[100vh] w-full  '>
                 <Icon color={"black"} />
-                <div ref={imageBox} className='h-[40%] w-[15%] rounded-4xl overflow-hidden bg-red-700 absolute top-[25%] left-[31%]'>
+                <div ref={imageBox} className='h-[40%] w-[15%] rounded-4xl overflow-hidden  absolute top-[25%] left-[31%]'>
                     <Image ref={imageRef}
                         src={images[currentImage]}
                         alt="user"
@@ -167,6 +168,7 @@ const page = () => {
                     <p className='text-white uppercase text-[3vw]'>Directrice de création</p>
                 </p>
             </div>
+            <Footer/>
         </div>
     )
 }
