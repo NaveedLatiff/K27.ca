@@ -1,49 +1,20 @@
-"use client"
-import React, { useRef, useLayoutEffect } from 'react'
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import React from 'react'
 
-gsap.registerPlugin(ScrollTrigger)
-
-const Cards = ({img1, img2, indx}) => {
-    const boxRef = useRef(null);
-    
-    useLayoutEffect(() => {
-        const box = boxRef.current;
-        
-        if (box) {
-            const startPoint = `bottom 90%`;
-            const endPoint = `top 10%`;
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: box,
-                    start: startPoint,
-                    end: endPoint,
-                    scrub: true,
-                    markers: true
-                }
-            });
-            
-            tl.fromTo(box, 
-                { height: "140px" },
-                { height: "400px", ease: "none" }
-            );
-            
-            return () => {
-                tl.kill();
-            };
-        }
-    }, [indx]);
-
+const Cards = ({ img1, img2 }) => {
     return (
-        <div ref={boxRef} className='h-[140px] w-full flex gap-[13px] overflow-hidden mb-[20px]'>
-            <div className='h-full w-1/2 bg-red-300'>
-                <img src={img1} className='h-full w-full object-cover' alt="Project image 1" />
+        <>
+            <div className='relative w-1/2 group h-full rounded-none hover:rounded-[80px] overflow-hidden transition-all'>
+                <img src={img1} className='h-full w-full object-cover' />
+                <div className='opacity-0 group-hover:opacity-100 absolute h-full w-full top-0 left-0 bg-black/30 flex items-center justify-center '>
+                    <h2 className='uppercase text-5xl font-[font1] border-2 border-white pt-1 px-6 text-white rounded-full'>VoIr le projet</h2></div>
             </div>
-            <div className='h-full w-1/2 bg-red-800'>
-                <img src={img2} className='h-full w-full object-cover' alt="Project image 2" />
+            <div className='relative w-1/2 group h-full rounded-none hover:rounded-[80px] overflow-hidden transition-all'>
+                <img src={img2} className='h-full w-full object-cover' />
+                <div className='opacity-0 group-hover:opacity-100 absolute h-full w-full top-0 left-0 bg-black/30 flex items-center justify-center '>
+                    <h2 className='uppercase text-5xl font-[font1] border-2 border-white pt-1 px-6 text-white rounded-full'>VoIr le projet</h2></div>
             </div>
-        </div>
+        </>
+
     )
 }
 

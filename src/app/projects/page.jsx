@@ -18,19 +18,39 @@ const page = () => {
         { img1: "/p-9.jpg", img2: "/p-10.jpg" }
     ]
 
+    useGSAP(()=>{
+        gsap.from(".box",{
+            height:100,
+            
+            stagger:{
+                amount:1,
+            },
+            scrollTrigger:{
+                trigger:".boxes-par",
+                markers:true,
+                start:"top 70%",
+                end:"top -300%",
+                scrub:true,
+            }
+        })
+    })
+
     return (
-        <div>
+        <div className='p-4'>
             <Icon color={"black"} />
-            <div className='flex gap-2 bg-red-900'>
-                <p className='text-[13vw] pt-[40vh] font-[font2] uppercase'>Projets</p>
-                <span className='text-[3vw] font-[font2] mt-[48vh] inline-block h-fit'>16</span>
+            <div className='flex  pt-[45vh] '>
+                <p className='text-[13vw]  font-[font2] uppercase'>Projets</p>
+                <span className='text-[3vw] font-[font2] pt-[7vh] inline-block h-fit'>16</span>
             </div>
-            <div className='boxes space-y-[50px] px-4 pt-10 bg-yellow-400'>
-                {images.map(({img1, img2}, indx) => {
-                    return <Cards key={indx} img1={img1} img2={img2} indx={indx}/>
+            <div className='boxes-par -mt-20'>
+                {images.map((x,indx) => {
+                    return <div key={indx} className='box w-full h-[400px] gap-2 mb-4 flex  '>
+                        <Cards  img1={x.img1} img2={x.img2} />
+                    </div>
+
                 })}
             </div>
-            <div className="h-[100vh]"></div>
+            <div className='h-screen'></div>
         </div>
     )
 }
