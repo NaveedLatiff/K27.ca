@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Icon from '../Components/Home/Icon'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -30,145 +30,283 @@ const page = () => {
         "/img-13.jpg",
         "/img-14.jpg"
     ]
+
+    // Fixed consistent breakpoint for GSAP scroll pinning
     useGSAP(() => {
-        gsap.to(imageBox.current, {
-            scrollTrigger: {
-                trigger: imageBox.current,
-                // markers: true,
-                start: "top 25%",
-                end: "top -120%",
-                pin: true,
-                onUpdate: ({ progress }) => {
-                    setCurrentImage(Math.floor(progress * (images.length - 1)))
+        if (window.innerWidth > 768) {
+            gsap.to(imageBox.current, {
+                scrollTrigger: {
+                    trigger: imageBox.current,
+                    start: "top 25%",
+                    end: "top -110%",
+                    pin: true,
+                    onUpdate: ({ progress }) => {
+                        setCurrentImage(Math.floor(progress * (images.length - 1)))
+                    }
                 }
-            }
-        })
+            })
+        }
     })
 
-    useGSAP(()=>{
-        gsap.from(".section-3",{
-            opacity:0,
-            y:60,
-            scrollTrigger:{
-                trigger:".section-3",
-                start:"top 50%",
-                markers:true,
-
-            }
-        })
-    })
-
+    // Fixed section-3 animation with consistent breakpoint
     useGSAP(() => {
-    let tween1 = gsap.to(".text1", {
-        x: "-120%",
-        duration: 15,
-        repeat: -1,
-        ease: "none",
-        paused: true, 
-    });
-
-    let tween2 = gsap.to(".text2", {
-        x: "196%",
-        duration: 15, 
-        repeat: -1,
-        ease: "none",
-        paused: true, 
-    });
-
-    gsap.to("body", {
-        backgroundColor: "black",
-        color:"white",
-        duration: 0.5,
-        scrollTrigger: {
-            trigger: section4Ref.current,
-            start: "top 80%",
-            end: "top -100%",
-            toggleActions: "play reverse play reverse",
-            onEnter: () => {
-                tween1.play();
-                  tween2.play()
-            },
-            onLeave: () => {
-                tween1.pause()
-                tween2.pause()
-            },
-            onEnterBack: () => {
-                tween1.play()
-                    tween2.play()
-            },
-            onLeaveBack: () => {
-                tween1.pause()
-                tween2.pause()
-            }
-        },
+        if (window.innerWidth > 768) {
+            gsap.from(".section-3", {
+                opacity: 0,
+                y: 60,
+                scrollTrigger: {
+                    trigger: ".section-3",
+                    start: "top 70%",
+                    markers: false, // Removed debug markers
+                }
+            })
+        }
     })
-})
+
+    // Section-4 animations
+    useGSAP(() => {
+        let tween1 = gsap.to(".text1", {
+            x: "-120%",
+            duration: 15,
+            repeat: -1,
+            ease: "none",
+            paused: true,
+        });
+
+        let tween2 = gsap.to(".text2", {
+            x: "196%",
+            duration: 15,
+            repeat: -1,
+            ease: "none",
+            paused: true,
+        });
+
+        gsap.to("body", {
+            backgroundColor: "black",
+            color: "white",
+            duration: 0.5,
+            scrollTrigger: {
+                trigger: section4Ref.current,
+                start: "top 80%",
+                end: "top -100%",
+                toggleActions: "play reverse play reverse",
+                onEnter: () => {
+                    tween1.play();
+                    tween2.play()
+                },
+                onLeave: () => {
+                    tween1.pause()
+                    tween2.pause()
+                },
+                onEnterBack: () => {
+                    tween1.play()
+                    tween2.play()
+                },
+                onLeaveBack: () => {
+                    tween1.pause()
+                    tween2.pause()
+                }
+            },
+        })
+    })
+
+    // Fixed consistent breakpoint for image cycling
+    useEffect(() => {
+        if (window.innerWidth <= 768) {
+            const interval = setInterval(() => {
+                setCurrentImage(prevIndex => {
+                    const nextIndex = prevIndex + 1
+                    return nextIndex >= images.length ? 0 : nextIndex
+                })
+            }, 2000)
+            return () => clearInterval(interval)
+        }
+    }, [])
+
     return (
         <div>
-            <div className='section-1 h-[100vh] w-full  '>
+            <div className='section-1 h-screen w-full relative flex justify-center items-center'>
                 <Icon color={"black"} />
-                <div ref={imageBox} className='h-[40%] w-[15%] rounded-4xl overflow-hidden  absolute top-[25%] left-[31%]'>
-                    <Image ref={imageRef}
+                <div
+                    ref={imageBox}
+                    className='
+                        absolute  rounded-3xl overflow-hidden 
+                        w-[150px] h-[190px]
+                        sm:w-[170px] sm:h-[210px]
+                        md:w-[190px] md:h-[230px]
+                        top-[20%] left-1/2 -translate-x-1/2
+                        md:top-[28%] md:left-[28%] md:translate-x-0 md:z-3
+                    '
+                >
+                    <Image
+                        ref={imageRef}
                         src={images[currentImage]}
                         alt="user"
                         fill
-                        sizes="15vw"
                         className='object-cover'
                     />
                 </div>
-                <div className='w-full text-[19vw] font-[font1] uppercase absolute top-[57%] font-bold text-center leading-[16vw] '>
+                <div className='
+                    w-full font-[font1] uppercase absolute font-bold text-center z-20
+                    text-[16vw] top-[55%] leading-[14vw]
+                    sm:text-[15vw] sm:leading-[13vw]
+                    md:text-[19vw] md:top-[57%] md:leading-[16vw]
+                '>
                     Soixan7e
                     <br />
                     Douze
                 </div>
             </div>
-            <div className='h-screen section-2 relative '>
-                <div className='  text-[3vw] font-[font1] font-bold absolute top-[30%] leading-none w-1/2 right-[10vw]'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notre curiosité nourrit notre créativité.
+            <div className='
+                section-2 flex justify-center items-center
+                h-auto py-12 px-4
+                sm:py-16 sm:px-6
+                md:h-screen md:py-0 md:px-0 md:relative md:z-20
+            '>
+                <div className='
+                    font-[font1] font-bold leading-relaxed
+                    text-[4.5vw] w-full text-center
+                    sm:text-[3.8vw] sm:w-4/5
+                    md:text-[2.5vw] md:w-1/2 md:absolute md:top-1/2 md:-translate-y-1/2 md:right-[10vw] md:text-left md:leading-none
+                '>
+                    <span className='hidden md:inline'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    Notre curiosité nourrit notre créativité.
                     On reste humbles et on dit non aux gros egos, même le vôtre.
                     Une marque est vivante. Elle a des valeurs, une personnalité, une histoire.
                     Si on oublie ça, on peut faire de bons chiffres à court terme, mais on la tue à long terme.
-                    C’est pour ça qu’on s’engage à donner de la perspective, pour bâtir des marques influentes.
+                    C'est pour ça qu'on s'engage à donner de la perspective, pour bâtir des marques influentes.
                 </div>
             </div>
-            <div className='section-3 h-screen w-full flex text-[1.4vw] font-[font1] font-bold px-[10%] gap-7'>
-                <div className="part w-[30%]   flex flex-col justify-between py-[10%] " >
-                    <p>Expertise</p>
-                    <p>Nos projets_ naissent dans l’humilité, grandissent dans la curiosité et vivent grâce à la créativité sous toutes ses formes.</p>
-                </div>
-                <div className="part w-[30%]  flex flex-col justify-between py-[10%]">
-                    <p>Stratégie
-                        <br />
-                        Publicité
-                        <br />
-                        Branding
-                        <br />
-                        Design
-                        <br />
-                        Contenu</p>
-                    <p>Notre création_ bouillonne dans un environnement où le talent a le goût d’exploser. Où on se sent libre d’être la meilleure version de soi-même.</p>
-                </div>
-                <div className="part w-[30%]  flex flex-col justify-end py-[12%]">
-                    <p>Notre culture_ c’est l’ouverture aux autres. Point. Tout l’équipage participe à bâtir une agence dont on est fiers.</p>
-                </div>
-            </div>
-            <div ref={section4Ref} className='relative section-4 h-screen w-full  flex justify-center text-[#D3FD50] text-[8vw] '>
-                <div className='relative h-full w-[40%] rounded-4xl overflow-hidden '>
-                    <Image
+            <div className='
+                section-3 w-full font-[font1] font-bold
+                mt-12 px-4
+                sm:mt-16 sm:px-6
+                md:mt-24 md:px-[10%]
+            '>
+                <div className='
+                    flex flex-col gap-8
+                    md:flex-row md:gap-7
+                '>
+                    <div className="
+                        flex flex-col gap-4
+                        md:w-[30%] md:gap-7 md:justify-between md:py-[10%]
+                    ">
+                        <p className='
+                            text-[6vw] 
+                            sm:text-[4.5vw]
+                            md:text-[2vw]
+                        '>
+                            Expertise
+                        </p>
+                        <p className='
+                            text-[4vw] leading-relaxed
+                            sm:text-[3.2vw]
+                            md:text-[1.7vw]
+                        '>
+                            Nos projets_ naissent dans l'humilité, grandissent dans la curiosité et vivent grâce à la créativité sous toutes ses formes.
+                        </p>
+                    </div>
 
+                    <div className="
+                        flex flex-col gap-4
+                        md:w-[30%] md:gap-7 md:justify-between md:py-[10%]
+                    ">
+                        <p className='
+                            text-[4vw] leading-relaxed
+                            sm:text-[3.2vw]
+                            md:text-[1.7vw]
+                        '>
+                            Stratégie
+                            <br />
+                            Publicité
+                            <br />
+                            Branding
+                            <br />
+                            Design
+                            <br />
+                            Contenu
+                        </p>
+                        <p className='
+                            text-[4vw] leading-relaxed
+                            sm:text-[3.2vw]
+                            md:text-[1.7vw]
+                        '>
+                            Notre création_ bouillonne dans un environnement où le talent a le goût d'exploser. Où on se sent libre d'être la meilleure version de soi-même.
+                        </p>
+                    </div>
+
+                    <div className="
+                        flex flex-col justify-start
+                        md:w-[30%] md:justify-end md:py-[12%]
+                    ">
+                        <p className='
+                            text-[4vw] leading-relaxed
+                            sm:text-[3.2vw]
+                            md:text-[1.7vw]
+                        '>
+                            Notre culture_ c'est l'ouverture aux autres. Point. Tout l'équipage participe à bâtir une agence dont on est fiers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                ref={section4Ref}
+                className='
+                    relative section-4 w-full flex justify-center text-[#D3FD50] overflow-hidden
+                    h-[60vh] mt-16
+                    sm:h-[70vh] sm:mt-20
+                    md:h-screen md:mt-24
+                '
+            >
+                <div className='
+                    relative rounded-3xl overflow-hidden
+                    w-[70%] h-full
+                    sm:w-[60%]
+                    md:w-[55%]
+                '>
+                    <Image
                         src={images[0]}
                         alt="user"
                         fill
-                        className='object-cover relative z-33'
+                        className='object-cover relative z-30'
                     />
                 </div>
-                <p className='w-full absolute z-0 text1 left-[100%] top-[20%] '>CARL</p>
-                <p className='w-full text2 absolute z-39 left-[-75%] top-[50%] flex gap-[30px]  items-center'> 
-                    <p className=''>GODBOUT</p>
-                    <p className='text-white uppercase text-[3vw]'>Directrice de création</p>
+
+                <p className='
+                    w-full absolute z-10 text1 left-[100%]
+                    text-[12vw] top-[15%]
+                    sm:text-[10vw] sm:top-[18%]
+                    md:text-[8vw] md:top-[20%]
+                '>
+                    CARL
                 </p>
+
+                <div className='
+                    w-full text2 absolute z-40 left-[-75%] flex items-center
+                    gap-4 top-[45%]
+                    sm:gap-6 sm:top-[48%]
+                    md:gap-8 md:top-[50%]
+                '>
+                    <p className='
+                        text-[12vw]
+                        sm:text-[10vw]
+                        md:text-[8vw]
+                    '>
+                        GODBOUT
+                    </p>
+                    <p className='
+                        text-white uppercase
+                        text-[3.5vw]
+                        sm:text-[3vw]
+                        md:text-[3vw]
+                    '>
+                        Directrice de création
+                    </p>
+                </div>
             </div>
-            <Footer/>
+
+            <Footer />
         </div>
     )
 }
