@@ -29,7 +29,6 @@ const page = () => {
                 },
                 scrollTrigger: {
                     trigger: ".boxes-par",
-                    markers: true,
                     start: "top 70%",
                     end: "top -300%",
                     scrub: true,
