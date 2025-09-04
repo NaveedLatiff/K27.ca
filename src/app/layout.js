@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Loader from "./Components/Loader/Loader";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,9 +24,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Suspense fallback={<div className="h-screen w-full flex justify-center items-center">
+            <div className="w-24 h-24 border-8 border-gray-200 border-t-black rounded-full animate-spin mb-4"></div>
+        </div>}>
         <Loader>
         {children}
         </Loader>
+        </Suspense>
       </body>
     </html>
   );

@@ -1,19 +1,32 @@
 'use client'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
 const Loader = ({ children }) => {
   let loaderParentRef = useRef(null)
   let pageRef = useRef(null)
   let pathname = usePathname()
+   let [isLoading, setIsLoading] = useState(true)
+  let [showContent, setShowContent] = useState(false)
 
+  useEffect(() => {
+    setIsLoading(true)
+    setShowContent(false)
+  }, [pathname])
+  
   useGSAP(() => {
-    let tl = gsap.timeline()
+     if (!isLoading) return
+     window.scrollTo(0, 0)
+     let tl = gsap.timeline({
+       onComplete: () => {
+         setIsLoading(false)
+         setShowContent(true)
+        }
+      })
     tl.to(loaderParentRef.current, {
       display: "block",
-
     })
     tl.to(".stair", {
       y: 0
@@ -39,10 +52,10 @@ const Loader = ({ children }) => {
       y: 0
     })
     tl.from(pageRef.current, {
-      opacity:0,
+      opacity: 0,
     })
 
-  }, [pathname])
+  }, [pathname,isLoading])
 
   return (
     <div>
@@ -58,7 +71,10 @@ const Loader = ({ children }) => {
           <div className='stair h-full w-1/5 bg-black'></div>
         </div>
       </div>
-      <div ref={pageRef}>
+      <div 
+      ref={pageRef}
+      style={{ opacity: showContent ? 1 : 0 }}
+      >
         {children}
       </div>
     </div>

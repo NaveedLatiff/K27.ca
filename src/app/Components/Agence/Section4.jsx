@@ -17,7 +17,7 @@ const Section4 = () => {
             repeat: -1,
             ease: "none",
             paused: true,
-        });
+        })
 
         let tween2 = gsap.to(".text2", {
             x: "196%",
@@ -25,7 +25,7 @@ const Section4 = () => {
             repeat: -1,
             ease: "none",
             paused: true,
-        });
+        })
 
         gsap.to("body", {
             backgroundColor: "black",
@@ -37,7 +37,7 @@ const Section4 = () => {
                 end: "top -100%",
                 toggleActions: "play reverse play reverse",
                 onEnter: () => {
-                    tween1.play();
+                    tween1.play()
                     tween2.play()
                 },
                 onLeave: () => {

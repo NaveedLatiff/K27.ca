@@ -12,11 +12,11 @@ gsap.registerPlugin(ScrollTrigger)
 
 const page = () => {
     let images = [
-        { img1: "/p-1.jpg", img2: "/p-2.jpg" },
-        { img1: "/p-3.jpg", img2: "/p-4.jpg" },
-        { img1: "/p-5.jpg", img2: "/p-6.jpg" },
-        { img1: "/p-7.jpg", img2: "/p-8.jpg" },
-        { img1: "/p-9.jpg", img2: "/p-10.jpg" }
+        { img1: "/p-1.webp", img2: "/p-2.webp" },
+        { img1: "/p-3.webp", img2: "/p-4.webp" },
+        { img1: "/p-5.webp", img2: "/p-6.webp" },
+        { img1: "/p-7.webp", img2: "/p-8.webp" },
+        { img1: "/p-9.webp", img2: "/p-10.webp" }
     ]
 
     useGSAP(() => {
